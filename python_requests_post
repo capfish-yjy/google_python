@@ -1,0 +1,31 @@
+  GNU nano 2.7.4                                                                           File: run.py
+
+#! /usr/bin/env python3
+# They're all written in the same format (i.e. title, name, date, and feedback).
+
+
+import os
+import requests
+import json
+
+directory = '/data/feedback'
+
+headers = {
+    'Content-type':'application/json',
+    'Accept':'application/json'
+}
+
+feedbacks =  []
+for file in os.listdir(directory):
+  print(file)
+  list = ["title", "name", "date", "feedback"]
+  dict = {}
+  i = 0
+  with open(os.path.join(directory,file), "r") as f:
+    for line in f:
+     dict[list[i]] = line
+     i += 1
+  print("{}".format(json.dumps(dict)))
+  response = requests.post("http://34.132.123.178/feedback/", data = json.dumps(dict), headers = headers)
+  if not response.ok :
+   raise Exception("Post Failed with status code {}".format(response.status_code))
