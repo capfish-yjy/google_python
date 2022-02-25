@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+#Iterate through each file in the folder
+#For each file:
+#Rotate the image 90° clockwise
+#Resize the image from 192x192 to 128x128
+#Save the image to a new folder in .jpeg format
+
+
+import sys
+import os
+from PIL import Image
+
+for file in os.listdir("./images"):
+    print(file)
+    try:
+        with Image.open("./images/"+file) as im:
+            print(im.format)
+            im.rotate(90).resize((128,128)).convert('RGB').save("/opt/icons/"+file, "JPEG" )
+    except OSError as e:
+        print(e)
+        pass
